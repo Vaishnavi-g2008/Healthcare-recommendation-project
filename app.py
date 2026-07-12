@@ -31,7 +31,7 @@ else:
         )
 
         vector = tfidf.fit_transform(
-            df['description']
+            df['tags']
         )
 
         similarity = cosine_similarity(vector)
