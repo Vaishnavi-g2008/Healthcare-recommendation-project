@@ -57,12 +57,15 @@ with c2:
 st.divider()
 
 # ---------------- Dropdown ----------------
-hospital_name = st.selectbox(
-    "Select Hospital",
-    sorted(df["Hospital"].unique())
+
+disease = st.selectbox(
+    "🩺 Select Medical Condition",
+    sorted(df["Medical Condition"].dropna().unique())
 )
 
 # ---------------- Recommend ----------------
+# ---------------- Recommend ----------------
+
 if st.button("🔍 Find Hospitals"):
 
     with st.spinner("Searching hospitals..."):
@@ -83,23 +86,21 @@ if st.button("🔍 Find Hospitals"):
             st.warning("No hospitals found.")
 
         else:
+
             for i, hospital in enumerate(hospitals[:5], start=1):
 
                 st.markdown(
                     f"""
                     <div style="
-                        background-color:#f0f8ff;
-                        padding:12px;
-                        border-radius:10px;
-                        margin-bottom:10px;
-                        border-left:6px solid #1f77b4;">
-                        <b>{i}. 🏥 {hospital}</b>
+                    background-color:#f0f8ff;
+                    padding:12px;
+                    border-radius:10px;
+                    margin-bottom:10px;
+                    border-left:6px solid #1f77b4;">
+                    <b>{i}. 🏥 {hospital}</b>
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
 
             st.balloons()
-        
-
-           
