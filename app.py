@@ -63,64 +63,43 @@ hospital_name = st.selectbox(
 )
 
 # ---------------- Recommend ----------------
-if st.button("🔍 Recommend Hospitals"):
+if st.button("🔍 Find Hospitals"):
 
-    with st.spinner("Finding similar hospitals..."):
+    with st.spinner("Searching hospitals..."):
 
         time.sleep(1)
 
-        index = df[df["Hospital"] == hospital_name].index[0]
-
-        similarity_scores = list(enumerate(similarity[index]))
-
-        similarity_scores = sorted(
-            similarity_scores,
-            key=lambda x: x[1],
-            reverse=True
+        hospitals = (
+            df[df["Medical Condition"] == disease]["Hospital"]
+            .drop_duplicates()
+            .tolist()
         )
 
-        st.success(f"Selected Hospital: {hospital_name}")
+        st.success(f"✅ Selected Disease: {disease}")
 
         st.subheader("🏥 Recommended Hospitals")
 
-        count = 1
+        if len(hospitals) == 0:
+            st.warning("No hospitals found.")
 
-        for i in similarity_scores[1:]:
+        else:
+            for i, hospital in enumerate(hospitals[:5], start=1):
 
-            hospital = df.iloc[i[0]]["Hospital"]
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color:#f0f8ff;
+                        padding:12px;
+                        border-radius:10px;
+                        margin-bottom:10px;
+                        border-left:6px solid #1f77b4;">
+                        <b>{i}. 🏥 {hospital}</b>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-            st.markdown(
-                f"""
-<div style="
-background:#f8fbff;
-padding:12px;
-border-radius:10px;
-margin-bottom:10px;
-border-left:6px solid #0d6efd;">
-<b>{count}. 🏥 {hospital}</b>
-</div>
-""",
-                unsafe_allow_html=True
-            )
+            st.balloons()
+        
 
-            count += 1
-
-            if count == 6:
-                break
-
-        st.balloons()
-
-st.divider()
-
-st.markdown(
-"""
-<center>
-
-### ❤️ Healthcare Recommendation System
-
-Python | Streamlit | NLP | TF-IDF | Cosine Similarity
-
-</center>
-""",
-unsafe_allow_html=True
-)
+           
